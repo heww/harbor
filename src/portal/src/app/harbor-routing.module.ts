@@ -22,6 +22,7 @@ import { MemberGuard } from './shared/route/member-guard-activate.service';
 import { PageNotFoundComponent } from './shared/not-found/not-found.component';
 import { HarborShellComponent } from './base/harbor-shell/harbor-shell.component';
 import { ConfigurationComponent } from './config/config.component';
+import { DevCenterComponent } from './dev-center/dev-center.component';
 
 import { UserComponent } from './user/user.component';
 import { SignInComponent } from './account/sign-in/sign-in.component';
@@ -186,7 +187,11 @@ const harborRoutes: Routes = [
         component: DestinationPageComponent,
         canActivate: [SystemAdminGuard],
         canActivateChild: [SystemAdminGuard],
-      }
+      },
+      {
+        path: 'devcenter',
+        component: DevCenterComponent
+      },
     ]
   },
   { path: "**", component: PageNotFoundComponent }

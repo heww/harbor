@@ -1,0 +1,32 @@
+<vmw-developer-center>
+
+    <vmw-developer-center-overview-page>
+        <p>
+            VMware Cloud on AWS provides multiple automation and development
+            interfaces that help you learn, automate, integrate and develop the
+            features available to you. These tools automate manual tasks, help
+            you manage complex environments at scale, and provide samples and
+            language bindings in common development languages so developers can
+            be up and running within around 5 minutes.
+        </p>
+    </vmw-developer-center-overview-page>
+
+    <vmw-developer-center-api-explorer-page>
+        <vmw-developer-center-api
+                [title]="'VMware Cloud on AWS'"
+                [swaggerUrl]="VMC_SWAGGER_URL"
+                [basePath]="'/vmc/api'">
+        </vmw-developer-center-api>
+    </vmw-developer-center-api-explorer-page>
+
+    <vmw-developer-center-code-sample-page [platform]="'VMware Cloud on AWS API'">
+    </vmw-developer-center-code-sample-page>
+
+    <vmw-developer-center-sdks-page [productId]="68">
+    </vmw-developer-center-sdks-page>
+
+    <vmw-developer-center-downloads-page>
+        Downloads, project your own content...
+    </vmw-developer-center-downloads-page>
+
+</vmw-developer-center>
