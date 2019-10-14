@@ -78,4 +78,4 @@ script:
 - if [ "$APITEST_LDAP" == true ]; then bash ./tests/travis/api_run.sh LDAP $IP; fi
 - if [ "$OFFLINE" == true ]; then bash ./tests/travis/distro_installer.sh; fi
 - if [ "$UI_UT" == true ]; then bash ./tests/travis/ui_ut_run.sh ; fi
-- if [[ ${TRAVIS_BRANCH} == "master" ]] && [[ ${TRAVIS_PULL_REQUEST} == "false" ]]; then mkdir -p $(dirname ${DOCKER_CACHE_FILE}) ; docker save $(docker history -q ${DOCKER_REPOSITORY}:${TRAVIS_COMMIT} | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE}; fi
+- if [[ ${TRAVIS_PULL_REQUEST} == "false" ]]; then mkdir -p $(dirname ${DOCKER_CACHE_FILE}) ; docker save $(docker history -q ${DOCKER_REPOSITORY}:${TRAVIS_COMMIT} | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE}; fi
