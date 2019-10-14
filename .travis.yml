@@ -5,25 +5,33 @@ go:
 go_import_path: github.com/goharbor/harbor
 services:
 - docker
+cache:
+  directories:
+    - /home/travis/docker/
 dist: trusty
 matrix:
   include:
   - go: 1.12.5
     env:
     - UTTEST=true
+    - DOCKER_CACHE_FILE=/home/travis/docker/ut-cache.tar.gz
   - go: 1.12.5
     env:
     - APITEST_DB=true
+    - DOCKER_CACHE_FILE=/home/travis/docker/apitest-db-cache.tar.gz
   - go: 1.12.5
     env:
     - APITEST_LDAP=true
+    - DOCKER_CACHE_FILE=/home/travis/docker/apitest-ldap-cache.tar.gz
   - go: 1.12.5
     env:
     - OFFLINE=true
+    - DOCKER_CACHE_FILE=/home/travis/docker/offline-cache.tar.gz
   - language: node_js
     node_js: 10.16.2
     env:
     - UI_UT=true
+    - DOCKER_CACHE_FILE=/home/travis/docker/ui-ut-cache.tar.gz
 env:
   global:
   - POSTGRESQL_HOST: localhost
@@ -41,7 +49,7 @@ env:
   - REG_VERSION: v2.7.1
   - UI_BUILDER_VERSION: 1.6.0
   - TOKEN_PRIVATE_KEY_PATH: "/home/travis/gopath/src/github.com/goharbor/harbor/tests/private_key.pem"
-addons: 
+addons:
 apt:
   sources:
   - google-chrome
@@ -57,6 +65,7 @@ before_install:
 - sudo sed -i '$a DOCKER_OPTS=\"--insecure-registry '$IP':5000\"' /etc/default/docker
 - export IP=$IP
 - sudo service docker restart
+- if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
 install:
 - if [ "$UTTEST" == true ]; then bash ./tests/travis/ut_install.sh ; fi
 - if [ "$APITEST_DB" == true ]; then bash ./tests/travis/api_common_install.sh $IP
@@ -69,3 +78,4 @@ script:
 - if [ "$APITEST_LDAP" == true ]; then bash ./tests/travis/api_run.sh LDAP $IP; fi
 - if [ "$OFFLINE" == true ]; then bash ./tests/travis/distro_installer.sh; fi
 - if [ "$UI_UT" == true ]; then bash ./tests/travis/ui_ut_run.sh ; fi
+- if [[ ${TRAVIS_BRANCH} == "master" ]] && [[ ${TRAVIS_PULL_REQUEST} == "false" ]]; then mkdir -p $(dirname ${DOCKER_CACHE_FILE}) ; docker save $(docker history -q ${DOCKER_REPOSITORY}:${TRAVIS_COMMIT} | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE}; fi
