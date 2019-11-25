@@ -17,7 +17,6 @@ package api
 import (
 	"errors"
 	"fmt"
-	"github.com/goharbor/harbor/src/core/filter"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -26,10 +25,11 @@ import (
 	"github.com/goharbor/harbor/src/common/dao"
 	"github.com/goharbor/harbor/src/common/models"
 	"github.com/goharbor/harbor/src/common/rbac"
-	"github.com/goharbor/harbor/src/common/rbac/project"
 	"github.com/goharbor/harbor/src/common/utils"
 	"github.com/goharbor/harbor/src/common/utils/log"
 	"github.com/goharbor/harbor/src/core/config"
+	"github.com/goharbor/harbor/src/core/filter"
+	"github.com/goharbor/harbor/src/pkg/permission/types"
 )
 
 // UserAPI handles request to /api/users/{}
@@ -479,13 +479,13 @@ func (ua *UserAPI) ListUserPermissions() {
 	relative := ua.Ctx.Input.Query("relative") == "true"
 
 	scope := rbac.Resource(ua.Ctx.Input.Query("scope"))
-	policies := []*rbac.Policy{}
+	policies := []*types.Policy{}
 
-	namespace, err := scope.GetNamespace()
-	if err == nil {
-		switch namespace.Kind() {
-		case "project":
-			for _, policy := range project.GetAllPolicies(namespace) {
+	if ns, ok := types.NamespaceFromResource(scope); ok {
+		switch ns.Kind() {
+		case rbac.ProjectNamespaceKind:
+			projectID := ns.Identity().(int64)
+			for _, policy := range rbac.GetPoliciesOfProject(projectID) {
 				if ua.SecurityCtx.Can(policy.Action, policy.Resource) {
 					policies = append(policies, policy)
 				}

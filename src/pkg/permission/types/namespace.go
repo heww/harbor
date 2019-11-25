@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package rbac
+package types
 
-import (
-	"fmt"
+var (
+	parses = map[string]NamespaceParse{}
 )
+
+// NamespaceParse parse namespace from the resource
+type NamespaceParse func(Resource) (Namespace, bool)
 
 // Namespace the namespace interface
 type Namespace interface {
@@ -26,36 +29,30 @@ type Namespace interface {
 	Resource(subresources ...Resource) Resource
 	// Identity returns identity attached with namespace
 	Identity() interface{}
-	// IsPublic returns true if namespace is public
-	IsPublic() bool
 }
 
-type projectNamespace struct {
-	projectID int64
-	isPublic  bool
+// RegistryNamespaceParse ...
+func RegistryNamespaceParse(name string, parse NamespaceParse) {
+	parses[name] = parse
 }
 
-func (ns *projectNamespace) Kind() string {
-	return "project"
-}
-
-func (ns *projectNamespace) Resource(subresources ...Resource) Resource {
-	return Resource(fmt.Sprintf("/project/%d", ns.projectID)).Subresource(subresources...)
-}
-
-func (ns *projectNamespace) Identity() interface{} {
-	return ns.projectID
-}
-
-func (ns *projectNamespace) IsPublic() bool {
-	return ns.isPublic
-}
-
-// NewProjectNamespace returns namespace for project
-func NewProjectNamespace(projectID int64, isPublic ...bool) Namespace {
-	isPublicNamespace := false
-	if len(isPublic) > 0 {
-		isPublicNamespace = isPublic[0]
+// NamespaceFromResource returns namespace from resource
+func NamespaceFromResource(resource Resource) (Namespace, bool) {
+	for _, parse := range parses {
+		if ns, ok := parse(resource); ok {
+			return ns, true
+		}
 	}
-	return &projectNamespace{projectID: projectID, isPublic: isPublicNamespace}
+
+	return nil, false
+}
+
+// ResourceAllowedInNamespace returns true when resource's namespace equal the ns
+func ResourceAllowedInNamespace(resource Resource, ns Namespace) bool {
+	n, ok := NamespaceFromResource(resource)
+	if ok {
+		return n.Kind() == ns.Kind() && n.Identity() == ns.Identity()
+	}
+
+	return false
 }

@@ -1,11 +1,12 @@
 package model
 
 import (
+	"time"
+
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
-	"github.com/goharbor/harbor/src/common/rbac"
 	"github.com/goharbor/harbor/src/common/utils"
-	"time"
+	"github.com/goharbor/harbor/src/pkg/permission/types"
 )
 
 // RobotTable is the name of table in DB that holds the robot object
@@ -45,12 +46,12 @@ type RobotQuery struct {
 
 // RobotCreate ...
 type RobotCreate struct {
-	Name        string         `json:"name"`
-	ProjectID   int64          `json:"pid"`
-	Description string         `json:"description"`
-	Disabled    bool           `json:"disabled"`
-	Visible     bool           `json:"-"`
-	Access      []*rbac.Policy `json:"access"`
+	Name        string          `json:"name"`
+	ProjectID   int64           `json:"pid"`
+	Description string          `json:"description"`
+	Disabled    bool            `json:"disabled"`
+	Visible     bool            `json:"-"`
+	Access      []*types.Policy `json:"access"`
 }
 
 // Pagination ...

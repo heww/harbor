@@ -28,6 +28,7 @@ import (
 	"github.com/goharbor/harbor/src/core/service/token"
 	"github.com/goharbor/harbor/src/jobservice/job"
 	"github.com/goharbor/harbor/src/jobservice/logger"
+	"github.com/goharbor/harbor/src/pkg/permission/types"
 	"github.com/goharbor/harbor/src/pkg/robot"
 	"github.com/goharbor/harbor/src/pkg/robot/model"
 	sca "github.com/goharbor/harbor/src/pkg/scan"
@@ -421,9 +422,8 @@ func (bc *basicController) makeBasicAuthorization(pid int64, repository string, 
 
 	logger.Warningf("repository %s and expire time %d are not supported by robot controller", repository, expireAt)
 
-	resource := rbac.NewProjectNamespace(pid).Resource(rbac.ResourceRepository)
-	access := []*rbac.Policy{{
-		Resource: resource,
+	access := []*types.Policy{{
+		Resource: rbac.NewProjectNamespace(pid).Resource(rbac.ResourceRepository),
 		Action:   rbac.ActionScannerPull,
 	}}
 
