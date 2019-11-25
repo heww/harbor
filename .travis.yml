@@ -32,7 +32,6 @@ env:
   - POSTGRESQL_PWD: root123
   - POSTGRESQL_DATABASE: registry
   - ADMINSERVER_URL: http://127.0.0.1:8888
-  - DOCKER_COMPOSE_VERSION: 1.23.0
   - HARBOR_ADMIN: admin
   - HARBOR_ADMIN_PASSWD: Harbor12345
   - CORE_SECRET: tempString
@@ -41,7 +40,7 @@ env:
   - REG_VERSION: v2.7.1
   - UI_BUILDER_VERSION: 1.6.0
   - TOKEN_PRIVATE_KEY_PATH: "/home/travis/gopath/src/github.com/goharbor/harbor/tests/private_key.pem"
-addons: 
+addons:
 apt:
   sources:
   - google-chrome
@@ -49,10 +48,6 @@ apt:
   - google-chrome-stable
   - google-chrome-beta
 before_install:
-- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
-  -s`-`uname -m` > docker-compose
-- chmod +x docker-compose
-- sudo mv docker-compose /usr/local/bin
 - IP=`ip addr s eth0 |grep "inet "|awk '{print $2}' |awk -F "/" '{print $1}'`
 - sudo sed -i '$a DOCKER_OPTS=\"--insecure-registry '$IP':5000\"' /etc/default/docker
 - export IP=$IP
