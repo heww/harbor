@@ -425,6 +425,18 @@ govet:
 	@echo checking govet...
 	@go list ./... | grep -v -E 'vendor|test' | xargs -L1 go vet
 
+goimports:
+	@echo checking goimports...
+	@ret=0 ; \
+	for file in $$(find . -type f -name "*.go" | grep -v -E 'vendor|mocks'); do \
+		out=$$(goimports -w -l $$file) ; \
+		if [ -n "$${out}" ]; then \
+			echo "$$file imports need fix" ; \
+			ret=1 ; \
+		fi; \
+	done ; \
+	exit $$ret
+
 pushimage:
 	@echo "pushing harbor images ..."
 	@$(DOCKERTAG) $(DOCKER_IMAGE_NAME_PREPARE):$(VERSIONTAG) $(REGISTRYSERVER)$(DOCKER_IMAGE_NAME_PREPARE):$(VERSIONTAG)
