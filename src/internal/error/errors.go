@@ -148,11 +148,12 @@ func UnknownError(err error) *Error {
 
 // IsErr checks whether the err chain contains error matches the code
 func IsErr(err error, code string) bool {
-	var e *Error
-	if errors.As(err, &e) {
-		return e.Code == code
-	}
-	return false
+	return ErrCode(err) == code
+}
+
+// IsNotFoundErr returns true when the error is NotFoundError
+func IsNotFoundErr(err error) bool {
+	return IsErr(err, NotFoundCode)
 }
 
 // IsConflictErr checks whether the err chain contains conflict error

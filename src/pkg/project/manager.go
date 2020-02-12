@@ -26,6 +26,8 @@ var (
 	Mgr = New()
 )
 
+// go:generate mockery -case underscore -name Manager
+
 // Manager is used for project management
 // currently, the interface only defines the methods needed for tag retention
 // will expand it when doing refactor

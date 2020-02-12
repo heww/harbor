@@ -35,3 +35,10 @@ func MethodAndPathSkipper(method string, re *regexp.Regexp) func(r *http.Request
 		return false
 	}
 }
+
+// NegativeSkipper negative skipper
+func NegativeSkipper(skipper Skipper) Skipper {
+	return func(r *http.Request) bool {
+		return !skipper(r)
+	}
+}

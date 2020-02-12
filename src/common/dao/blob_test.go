@@ -107,10 +107,6 @@ func TestListBlobs(t *testing.T) {
 	assert.Nil(err)
 	assert.Len(blobs, 1)
 
-	blobs, err = ListBlobs(&models.BlobQuery{ContentType: schema2.MediaTypeForeignLayer})
-	assert.Nil(err)
-	assert.Len(blobs, 2)
-
 	blobs, err = ListBlobs(&models.BlobQuery{Digests: []string{d1.String(), d2.String(), d3.String()}})
 	assert.Nil(err)
 	assert.Len(blobs, 3)
