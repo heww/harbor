@@ -29,6 +29,11 @@ type PostInitiateBlobUploadMiddlewareTestSuite struct {
 	htesting.Suite
 }
 
+func (suite *PostInitiateBlobUploadMiddlewareTestSuite) SetupSuite() {
+	suite.Suite.SetupSuite()
+	suite.Suite.ClearTables = []string{"project_blob", "blob"}
+}
+
 func (suite *PostInitiateBlobUploadMiddlewareTestSuite) TestMountBlob() {
 	suite.WithProject(func(projectID int64, projectName string) {
 		ctx := suite.Context()

@@ -46,6 +46,7 @@ var (
 // Suite ...
 type Suite struct {
 	suite.Suite
+	ClearTables []string
 }
 
 // SetupSuite ...
@@ -54,6 +55,13 @@ func (suite *Suite) SetupSuite() {
 		config.Init()
 		dao.PrepareTestForPostgresSQL()
 	})
+}
+
+// TearDownSuite ...
+func (suite *Suite) TearDownSuite() {
+	for _, table := range suite.ClearTables {
+		dao.ClearTable(table)
+	}
 }
 
 // RandString ...

@@ -30,6 +30,11 @@ type PutBlobUploadMiddlewareTestSuite struct {
 	htesting.Suite
 }
 
+func (suite *PutBlobUploadMiddlewareTestSuite) SetupSuite() {
+	suite.Suite.SetupSuite()
+	suite.Suite.ClearTables = []string{"project_blob", "blob"}
+}
+
 func (suite *PutBlobUploadMiddlewareTestSuite) TestDataInBody() {
 	suite.WithProject(func(projectID int64, projectName string) {
 		req := suite.NewRequest(http.MethodPut, fmt.Sprintf("/v2/%s/photon/blobs/uploads/%s", projectName, uuid.New().String()), nil)

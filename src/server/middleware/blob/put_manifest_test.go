@@ -32,6 +32,11 @@ type PutManifestMiddlewareTestSuite struct {
 	htesting.Suite
 }
 
+func (suite *PutManifestMiddlewareTestSuite) SetupSuite() {
+	suite.Suite.SetupSuite()
+	suite.Suite.ClearTables = []string{"project_blob", "blob", "artifact_blob"}
+}
+
 func (suite *PutManifestMiddlewareTestSuite) pushBlob(name string, digest string, size int64) {
 	req := suite.NewRequest(http.MethodPut, fmt.Sprintf("/v2/%s/blobs/uploads/%s", name, uuid.New().String()), nil)
 	req.Header.Set("Content-Length", fmt.Sprintf("%d", size))

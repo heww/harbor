@@ -24,6 +24,7 @@ import (
 	"github.com/goharbor/harbor/src/common/utils/log"
 	"github.com/goharbor/harbor/src/pkg/distribution"
 	"github.com/goharbor/harbor/src/server/middleware"
+	"github.com/justinas/alice"
 )
 
 // PutManifestMiddleware middleware which create Blobs for the foreign layers and attach them to the project,
@@ -34,7 +35,12 @@ func PutManifestMiddleware() func(http.Handler) http.Handler {
 		middleware.MethodAndPathSkipper(http.MethodPut, distribution.ManifestURLRegexp),
 	)
 
-	return middleware.AfterResponse(func(w http.ResponseWriter, r *http.Request, statusCode int) error {
+	before := middleware.BeforeRequest(func(r *http.Request) error {
+		// Do nothing, only make the request nopclose
+		return nil
+	}, skipper)
+
+	after := middleware.AfterResponse(func(w http.ResponseWriter, r *http.Request, statusCode int) error {
 		if statusCode != http.StatusCreated {
 			return nil
 		}
@@ -98,6 +104,10 @@ func PutManifestMiddleware() func(http.Handler) http.Handler {
 
 		return nil
 	}, skipper)
+
+	return func(next http.Handler) http.Handler {
+		return alice.New(before, after).Then(next)
+	}
 }
 
 func isForeign(d *distribution.Descriptor) bool {
