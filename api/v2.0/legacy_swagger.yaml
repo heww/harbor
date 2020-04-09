@@ -23,7 +23,7 @@ paths:
     get:
       summary: 'Health check API'
       description: |
-        The endpoint returns the health stauts of the system.
+        The endpoint returns the health status of the system.
       tags:
         - Products
       responses:
@@ -332,7 +332,7 @@ paths:
           format: int64
         - name: meta_name
           in: path
-          description: The name of metadat.
+          description: The name of metadata.
           required: true
           type: string
       tags:
@@ -359,7 +359,7 @@ paths:
           description: The ID of project.
         - name: meta_name
           in: path
-          description: The name of metadat.
+          description: The name of metadata.
           required: true
           type: string
       tags:
@@ -390,7 +390,7 @@ paths:
           format: int64
         - name: meta_name
           in: path
-          description: The name of metadat.
+          description: The name of metadata.
           required: true
           type: string
       tags:
@@ -399,7 +399,7 @@ paths:
         '200':
           description: Metadata is deleted successfully.
         '400':
-          description: Invalid requst.
+          description: Invalid request.
         '403':
           description: User need to log in first.
         '404':
@@ -500,7 +500,7 @@ paths:
         '403':
           description: User in session does not have permission to the project.
         '404':
-          description: Project or projet member does not exist.
+          description: Project or project member does not exist.
         '500':
           description: Unexpected internal errors.
     put:
@@ -1135,7 +1135,7 @@ paths:
           type: integer
           format: int32
           required: false
-          description: The page nubmer.
+          description: The page number.
         - name: page_size
           in: query
           type: integer
@@ -1305,7 +1305,7 @@ paths:
           type: integer
           format: int32
           required: false
-          description: The page nubmer.
+          description: The page number.
         - name: page_size
           in: query
           type: integer
@@ -1732,7 +1732,7 @@ paths:
         '200':
           description: Ping ldap service successfully.
         '400':
-          description: Inviald ldap configuration parameters.
+          description: Invalid ldap configuration parameters.
         '401':
           description: User need to login first.
         '403':
@@ -2214,7 +2214,7 @@ paths:
         '200':
           description: Ping email server successfully.
         '400':
-          description: Inviald email server settings.
+          description: Invalid email server settings.
         '401':
           description: User need to login first.
         '403':
@@ -2225,8 +2225,8 @@ paths:
           description: Unexpected internal errors.
   /chartrepo/{repo}/charts/{name}/{version}/labels:
     get:
-      summary: Return the attahced labels of chart.
-      description: Return the attahced labels of the specified chart version.
+      summary: Return the attached labels of chart.
+      description: Return the attached labels of the specified chart version.
       tags:
         - Products
         - Chart Repository
@@ -2249,15 +2249,19 @@ paths:
           description: The chart version
       responses:
         '200':
-          $ref: '#/definitions/Labels'
+          description: Get successfully.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Label'
         '401':
-          $ref: '#/definitions/UnauthorizedChartAPIError'
+          $ref: '#/responses/UnauthorizedChartAPIError'
         '403':
-          $ref: '#/definitions/ForbiddenChartAPIError'
+          $ref: '#/responses/ForbiddenChartAPIError'
         '404':
-          $ref: '#/definitions/NotFoundChartAPIError'
+          $ref: '#/responses/NotFoundChartAPIError'
         '500':
-          $ref: '#/definitions/InternalChartAPIError'
+          $ref: '#/responses/InternalChartAPIError'
     post:
       summary: Mark label to chart.
       description: Mark label to the specified chart version.
@@ -2291,17 +2295,17 @@ paths:
         '200':
           description: The label is successfully marked to the chart version.
         '400':
-          $ref: '#/definitions/BadRequestFormatedError'
+          $ref: '#/responses/BadRequestFormatedError'
         '401':
-          $ref: '#/definitions/UnauthorizedChartAPIError'
+          $ref: '#/responses/UnauthorizedChartAPIError'
         '403':
-          $ref: '#/definitions/ForbiddenChartAPIError'
+          $ref: '#/responses/ForbiddenChartAPIError'
         '404':
-          $ref: '#/definitions/NotFoundChartAPIError'
+          $ref: '#/responses/NotFoundChartAPIError'
         '409':
-          $ref: '#/definitions/ConflictFormatedError'
+          $ref: '#/responses/ConflictFormatedError'
         '500':
-          $ref: '#/definitions/InternalChartAPIError'
+          $ref: '#/responses/InternalChartAPIError'
   /chartrepo/{repo}/charts/{name}/{version}/labels/{id}:
     delete:
       summary: Remove label from chart.
@@ -2335,15 +2339,15 @@ paths:
         '200':
           description: The label is successfully unmarked from the chart version.
         '400':
-          $ref: '#/definitions/BadRequestFormatedError'
+          $ref: '#/responses/BadRequestFormatedError'
         '401':
-          $ref: '#/definitions/UnauthorizedChartAPIError'
+          $ref: '#/responses/UnauthorizedChartAPIError'
         '403':
-          $ref: '#/definitions/ForbiddenChartAPIError'
+          $ref: '#/responses/ForbiddenChartAPIError'
         '404':
-          $ref: '#/definitions/NotFoundChartAPIError'
+          $ref: '#/responses/NotFoundChartAPIError'
         '500':
-          $ref: '#/definitions/InternalChartAPIError'
+          $ref: '#/responses/InternalChartAPIError'
   '/projects/{project_id}/robots':
     get:
       summary: Get all robot accounts of specified project
@@ -2411,8 +2415,8 @@ paths:
           description: Unexpected internal errors.
   '/projects/{project_id}/robots/{robot_id}':
     get:
-      summary: Return the infor of the specified robot account.
-      description: Return the infor of the specified robot account.
+      summary: Return the info of the specified robot account.
+      description: Return the info of the specified robot account.
       tags:
         - Products
         - Robot Account
@@ -2947,7 +2951,7 @@ paths:
   '/projects/{project_id}/webhook/events':
     get:
       summary: Get supported event types and notify types.
-      description: Get supportted event types and notify types.
+      description: Get supported event types and notify types.
       tags:
         - Products
       parameters:
@@ -3098,7 +3102,6 @@ paths:
           description: Get Retention Metadatas successfully.
           schema:
             $ref: '#/definitions/RetentionMetadata'
-
   '/retentions':
     post:
       summary: Create Retention Policy
@@ -3127,7 +3130,6 @@ paths:
           description: User have no permission.
         '500':
           description: Unexpected internal errors.
-
   '/retentions/{id}':
     get:
       summary: Get Retention Policy
@@ -3182,7 +3184,6 @@ paths:
           description: User have no permission.
         '500':
           description: Unexpected internal errors.
-
   '/retentions/{id}/executions':
     post:
       summary: Trigger a Retention job
@@ -3241,7 +3242,6 @@ paths:
           description: User have no permission.
         '500':
           description: Unexpected internal errors.
-
   '/retentions/{id}/executions/{eid}':
     patch:
       summary: Stop a Retention job
@@ -3280,7 +3280,6 @@ paths:
           description: User have no permission.
         '500':
           description: Unexpected internal errors.
-
   '/retentions/{id}/executions/{eid}/tasks':
     get:
       summary: Get Retention job tasks
@@ -3315,11 +3314,10 @@ paths:
           description: User have no permission.
         '500':
           description: Unexpected internal errors.
-
   '/retentions/{id}/executions/{eid}/tasks/{tid}':
     get:
       summary: Get Retention job task log
-      description: Get Retention job task log, tags ratain or deletion detail will be shown in a table.
+      description: Get Retention job task log, tags retain or deletion detail will be shown in a table.
       tags:
         - Products
         - Retention
@@ -3353,7 +3351,6 @@ paths:
           description: User have no permission.
         '500':
           description: Unexpected internal errors.
-
   '/scanners':
     get:
       summary: List scanner registrations
@@ -3370,14 +3367,13 @@ paths:
             items:
               $ref: '#/definitions/ScannerRegistration'
         '400':
-          description: Bad query paramters
+          description: Bad query parameters
         '401':
           description: Unauthorized request
         '403':
           description: Request is not allowed, system role required
         '500':
           description: Internal server error happened
-
     post:
       summary: Create a scanner registration
       description: |
@@ -3432,7 +3428,7 @@ paths:
     get:
       summary: Get a scanner registration details
       description: |
-        Retruns the details of the specified scanner registration.
+        Returns the details of the specified scanner registration.
       tags:
         - Products
         - Scanners
@@ -3470,7 +3466,7 @@ paths:
         - name: registration
           in: body
           required: true
-          description: A scanner registraiton to be updated.
+          description: A scanner registration to be updated.
           schema:
             $ref: '#/definitions/ScannerRegistrationReq'
       responses:
@@ -3539,7 +3535,7 @@ paths:
     get:
       summary: Get the metadata of the specified scanner registration
       description: |
-        Get the metadata of the specified scanner registration, including the capabilities and customzied properties.
+        Get the metadata of the specified scanner registration, including the capabilities and customized properties.
       tags:
         - Products
         - Scanners
@@ -3706,6 +3702,34 @@ responses:
     description: 'The Media Type of the request is not supported, it has to be "application/json"'
   InternalServerError:
     description: 'Internal Server Error'
+  UnauthorizedChartAPIError:
+    description: Unauthorized
+    schema:
+      $ref: '#/definitions/ChartAPIError'
+  ForbiddenChartAPIError:
+    description: Operation is forbidden or quota exceeded
+    schema:
+      $ref: '#/definitions/ChartAPIError'
+  InternalChartAPIError:
+    description: Internal server error occurred
+    schema:
+      $ref: '#/definitions/ChartAPIError'
+  NotFoundChartAPIError:
+    description: Not found
+    schema:
+      $ref: '#/definitions/ChartAPIError'
+  InsufficientStorageChartAPIError:
+    description: Insufficient storage
+    schema:
+      $ref: '#/definitions/ChartAPIError'
+  BadRequestFormatedError:
+    description: Bad request
+    schema:
+      $ref: '#/definitions/ChartAPIError'
+  ConflictFormatedError:
+    description: Conflicts
+    schema:
+      $ref: '#/definitions/ChartAPIError'
 definitions:
   Search:
     type: object
@@ -3721,7 +3745,7 @@ definitions:
         items:
           $ref: '#/definitions/SearchRepository'
       chart:
-        description: Search results of the charts that macthed the filter keywords.
+        description: Search results of the charts that matched the filter keywords.
         type: array
         items:
           $ref: '#/definitions/SearchResult'
@@ -4221,14 +4245,14 @@ definitions:
         description: The base dn of ldap service.
       ldap_filter:
         type: string
-        description: The serach filter of ldap service.
+        description: The search filter of ldap service.
       ldap_uid:
         type: string
-        description: The serach uid from ldap service attributes.
+        description: The search uid from ldap service attributes.
       ldap_scope:
         type: integer
         format: int64
-        description: The serach scope of ldap service.
+        description: The search scope of ldap service.
       ldap_connection_timeout:
         type: integer
         format: int64
@@ -4282,7 +4306,7 @@ definitions:
         description: Use ssl/tls or not.
       email_identity:
         type: string
-        description: The dentity of email server.
+        description: The identity of email server.
   ComponentOverviewEntry:
     type: object
     properties:
@@ -4655,41 +4679,6 @@ definitions:
       error:
         type: string
         description: The error message returned by the chart API
-  UnauthorizedChartAPIError:
-    description: Unauthorized
-    type: object
-    allOf:
-      - $ref: '#/definitions/ChartAPIError'
-  ForbiddenChartAPIError:
-    description: Operation is forbidden or quota exceeded
-    type: object
-    allOf:
-      - $ref: '#/definitions/ChartAPIError'
-  InternalChartAPIError:
-    description: Internal server error occurred
-    type: object
-    allOf:
-      - $ref: '#/definitions/ChartAPIError'
-  NotFoundChartAPIError:
-    description: Not found
-    type: object
-    allOf:
-      - $ref: '#/definitions/ChartAPIError'
-  InsufficientStorageChartAPIError:
-    description: Insufficient storage
-    type: object
-    allOf:
-      - $ref: '#/definitions/ChartAPIError'
-  BadRequestFormatedError:
-    description: Bad request
-    type: object
-    allOf:
-      - $ref: '#/definitions/ChartAPIError'
-  ConflictFormatedError:
-    description: Conflicts
-    type: object
-    allOf:
-      - $ref: '#/definitions/ChartAPIError'
   ChartMetadata:
     type: object
     description: The metadata of chart version
@@ -4915,7 +4904,7 @@ definitions:
         description: the resource of harbor
       action:
         type: string
-        description: the action to resource that perdefined in harbor rbac
+        description: the action to resource that predefined in harbor rbac
   RobotAccountUpdate:
     type: object
     properties:
@@ -4928,7 +4917,7 @@ definitions:
     properties:
       resource:
         type: string
-        description: The permission resoruce
+        description: The permission resource
       action:
         type: string
         description: The permission action
@@ -5206,7 +5195,6 @@ definitions:
       update_time:
         type: string
         description: The webhook job update time.
-
   RetentionMetadata:
     type: object
     description: the tag retention metadata
@@ -5226,7 +5214,6 @@ definitions:
         description: supported tag selectors
         items:
           $ref: '#/definitions/RetentionSelectorMetadata'
-
   RetentionRuleMetadata:
     type: object
     description: the tag retention rule metadata
@@ -5245,7 +5232,6 @@ definitions:
         description: rule params
         items:
           $ref: '#/definitions/RetentionRuleParamMetadata'
-
   RetentionRuleParamMetadata:
     type: object
     description: rule param
@@ -5256,8 +5242,6 @@ definitions:
         type: string
       required:
         type: boolean
-
-
   RetentionSelectorMetadata:
     type: object
     description: retention selector
@@ -5270,7 +5254,6 @@ definitions:
         type: array
         items:
           type: string
-
   RetentionPolicy:
     type: object
     description: retention policy
@@ -5290,7 +5273,6 @@ definitions:
       scope:
         type: object
         $ref: '#/definitions/RetentionPolicyScope'
-
   RetentionRuleTrigger:
     type: object
     properties:
@@ -5300,7 +5282,6 @@ definitions:
         type: object
       references:
         type: object
-
   RetentionPolicyScope:
     type: object
     properties:
@@ -5308,7 +5289,6 @@ definitions:
         type: string
       ref:
         type: integer
-
   RetentionRule:
     type: object
     properties:
@@ -5336,7 +5316,6 @@ definitions:
           type: array
           items:
             $ref: '#/definitions/RetentionSelector'
-
   RetentionSelector:
     type: object
     properties:
@@ -5346,7 +5325,6 @@ definitions:
         type: string
       pattern:
         type: string
-
   RetentionExecution:
     type: object
     properties:
@@ -5366,7 +5344,6 @@ definitions:
         type: string
       dry_run:
         type: boolean
-
   RetentionExecutionTask:
     type: object
     properties:
@@ -5414,7 +5391,6 @@ definitions:
         type: string
       enabled:
         type: boolean
-
   ScannerRegistration:
     type: object
     description: |
@@ -5482,7 +5458,6 @@ definitions:
         type: string
         description: Optional property to describe the version of the scanner registration
         example: "1.0.1"
-
   ScannerRegistrationReq:
     type: object
     properties:
@@ -5524,7 +5499,6 @@ definitions:
         type: boolean
         default: false
         description: Indicate whether the registration is enabled or not
-
   ScannerRegistrationSettings:
     type: object
     properties:
@@ -5548,7 +5522,6 @@ definitions:
         description: |
           An optional value of the HTTP Authorization header sent with each request to the Scanner Adapter API.
         example: "Bearer: JWTTOKENGOESHERE"
-
   IsDefault:
     type: object
     properties:
@@ -5570,7 +5543,6 @@ definitions:
         type: string
         description: Version of the scanner adapter
         example: "1.0.1"
-
   ScannerCapability:
     type: object
     properties:
@@ -5584,7 +5556,6 @@ definitions:
         items:
           type: string
           example: "application/vnd.scanner.adapter.vuln.report.harbor+json; version=1.0"
-
   ScannerAdapterMetadata:
     type: object
     description: The metadata info of the scanner adapter
@@ -5601,14 +5572,12 @@ definitions:
           type: string
         example:
           'harbor.scanner-adapter/registry-authorization-type': 'Bearer'
-
   ProjectScanner:
     type: object
     properties:
       uuid:
         type: string
         description: The identifier of the scanner registration
-
   Stats:
     type: object
     description: Stats provides the overall progress of the scan all process.
@@ -5640,7 +5609,7 @@ definitions:
           'Running': 3
   SupportedWebhookEventTypes:
     type: object
-    description: Supportted webhook event types and notify types.
+    description: Supported webhook event types and notify types.
     properties:
       event_type:
         type: array
@@ -5652,9 +5621,9 @@ definitions:
           $ref: '#/definitions/NotifyType'
   EventType:
     type: string
-    description: Webhook supportted event type.
+    description: Webhook supported event type.
     example: 'pullImage'
   NotifyType:
     type: string
-    description: Webhook supportted notify type.
+    description: Webhook supported notify type.
     example: 'http'
