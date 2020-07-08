@@ -18,10 +18,11 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	lru "github.com/hashicorp/golang-lru"
 	"reflect"
 	"sync"
 	"time"
+
+	lru "github.com/hashicorp/golang-lru"
 )
 
 // DriverType database driver constant int.
@@ -424,8 +425,7 @@ func GetDB(aliasNames ...string) (*sql.DB, error) {
 }
 
 type stmtDecorator struct {
-	wg sync.WaitGroup
-	lastUse int64
+	wg   sync.WaitGroup
 	stmt *sql.Stmt
 }
 
@@ -435,7 +435,6 @@ func (s *stmtDecorator) getStmt() *sql.Stmt {
 
 func (s *stmtDecorator) acquire() {
 	s.wg.Add(1)
-	s.lastUse = time.Now().Unix()
 }
 
 func (s *stmtDecorator) release() {
@@ -453,7 +452,6 @@ func (s *stmtDecorator) destroy() {
 func newStmtDecorator(sqlStmt *sql.Stmt) *stmtDecorator {
 	return &stmtDecorator{
 		stmt: sqlStmt,
-		lastUse: time.Now().Unix(),
 	}
 }
 
