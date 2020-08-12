@@ -3,13 +3,7 @@
 import base
 import subprocess
 import json
-
-try:
-    import docker
-except ImportError:
-    import pip
-    pip.main(['install', 'docker'])
-    import docker
+import docker
 
 def docker_info_display():
     command = ["docker", "info", "-f", "'{{.OSType}}/{{.Architecture}}'"]
