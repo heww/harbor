@@ -17,17 +17,17 @@ package scan
 import (
 	"testing"
 
-	common "github.com/goharbor/harbor/src/common/dao"
 	"github.com/goharbor/harbor/src/lib/orm"
 	"github.com/goharbor/harbor/src/lib/q"
 	v1 "github.com/goharbor/harbor/src/pkg/scan/rest/v1"
+	htesting "github.com/goharbor/harbor/src/testing"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
 // ReportTestSuite is test suite of testing report DAO.
 type ReportTestSuite struct {
-	suite.Suite
+	htesting.Suite
 
 	dao DAO
 }
@@ -39,7 +39,7 @@ func TestReport(t *testing.T) {
 
 // SetupSuite prepares env for test suite.
 func (suite *ReportTestSuite) SetupSuite() {
-	common.PrepareTestForPostgresSQL()
+	suite.Suite.SetupSuite()
 
 	suite.dao = New()
 }
